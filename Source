@@ -1,6 +1,5 @@
 //My First C# project. A simple multiplication game that I keep adding to overtime as I get ideas.
 using System;
-using System.Net;
 using System.Collections.Generic;
 using System.Linq;
 using System.Text;
