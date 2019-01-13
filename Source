@@ -121,7 +121,7 @@ namespace MultiplicationGame
                 //Adds the points
                 points += pointGain;
 
-                //Calculates and adds experience (Answer of the question / (Points Gained that round - current health) + 8 + (turns correct times 2)s
+                //Calculates and adds experience (Answer of the question / (Points Gained that round - current health) + 8 + (turns correct times 2)
                 double experienceGain = Math.Round(Convert.ToDouble(answer) / (Math.Abs(pointGain - health)) + 8 + (turnsCorrect * 2));
                 experience += experienceGain;
 
