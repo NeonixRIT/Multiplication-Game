@@ -402,12 +402,12 @@ namespace MultiplicationGame
                     goto Retry;
                 } else if (num.Any(devAnswer.ToLower().Contains) == false)
                 {
-                    Console.WriteLine("Put in a number dumbass");
+                    Console.WriteLine("That's not a number.");
                     Console.ReadKey();
                     goto Dev;
                 } else
                 {
-                    Console.WriteLine("... only 7 choices. Choose 1-7 for fuck's sake.");
+                    Console.WriteLine("... only 7 choices. Choose 1-7.");
                     Console.ReadKey();
                     goto Dev;
                 }
