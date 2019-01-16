@@ -1,0 +1,484 @@
+//TODO
+//Add Increase difficulty method
+//Add troubleshooting console
+//Add Death and Replay option
+//Add Use Skips option
+//Fix crash that happens when a character is input instead of a number
+using System;
+using System.Collections.Generic;
+using System.Linq;
+using System.Text;
+using System.Threading.Tasks;
+
+namespace Multiplication_Game_Rewritten_
+{
+    class Player
+    {
+        public static int health { get; set; }
+        public static int armour { get; set; }
+        public static bool hasDivineShield { get; set; }
+        public static int experience { get; set; }
+        public static int points { get; set; }
+        public static int skips { get; set; }
+        public static int turnsCorrect { get; set; }
+        public static int correctStreak { get; set; }
+        public static double experienceGained { get; set; }
+        public static double pointsGained { get; set; }
+
+        public static string input;
+        public static int maxHealth = 100;
+
+        public Player(int initialHealth, int initialArmour)
+        {
+            health = initialHealth;
+            armour = initialArmour;
+            hasDivineShield = false;
+            turnsCorrect = 0;
+            correctStreak = 0;
+            skips = 0;
+            experience = 0;
+            points = 0;
+        }
+    }
+
+    class GameBackEnd : Player
+    {
+        public static int turn { get; set; }
+        public static int answer { get; private set; }
+        public static string userStats { get; set; }
+        public static double difference { get; set; }
+        public static double lostPoints { get; set; }
+        public static double lostHealth { get; set; }
+        public static int lostArmour { get; set; }
+        public static bool itsPowerUpTime { get; set; }
+        public static string reply;
+
+        public GameBackEnd() : base(100, 0)
+        {
+        }
+
+        public static string UserStats()
+        {
+            if (armour > 0)
+            {
+                userStats = String.Join(Environment.NewLine, $"Turn: {turn}", $"Armour: {armour}", $"Health: {health}", $"Points: {points}", $"Experience: {experience}", $"Divine Shield: {hasDivineShield}");
+            } else 
+            {
+                userStats = String.Join(Environment.NewLine, $"Turn: {turn}", $"Health: {health}", $"Points: {points}", $"Experience: {experience}", $"Divine Shield: {hasDivineShield}");
+            }
+            return userStats;
+        }
+
+        public static string GenerateMultiplicationProblem(int minNumber1, int maxNumber1, int minNumber2, int maxNumber2)
+        {
+            Random numberGenerator = new Random();
+            int num01 = numberGenerator.Next(minNumber1, maxNumber1);
+            int num02 = numberGenerator.Next(minNumber2, maxNumber2);
+            answer = num01 * num02;
+            if (num01 == num02)
+            {
+                return $"What is {num01} squared?";
+            }
+            else
+            {
+                return $"What is {num01} multiplied by {num02}?";
+            }
+        }
+
+        public static void AddToMaxHealth(int ammoutToAdd, int experienceCost)
+        {
+            maxHealth += ammoutToAdd;
+            experience -= experienceCost;
+        }
+
+        public static void AddToHealth(int amountToAdd, int experienceCost)
+        {
+            health += amountToAdd;
+            if (health > maxHealth)
+            {
+                armour += health - maxHealth;
+                health = maxHealth;
+            }
+            experience -= experienceCost;
+        }
+
+        public static void ActivateDivineShield(int experienceCost)
+        {
+            hasDivineShield = true;
+            experience -= experienceCost;
+        }
+
+        public static void AddSkips(int amountToAdd, int expierienceCost)
+        {
+            skips += amountToAdd;
+            experience -= expierienceCost;
+        }
+
+        public static void AddPointsGained(int answer, int turnsCorrect)
+        {
+            pointsGained = Math.Round(Convert.ToDouble(answer) / 25 + turnsCorrect);
+            points += Convert.ToInt16(pointsGained);
+        }
+
+        public static void AddExperienceGained(int answer, double pointsGained)
+        {
+            experienceGained = Math.Round(Convert.ToDouble(answer) / (Math.Abs(pointsGained - health)) + 8 + (turnsCorrect * 2));
+            experience += Convert.ToInt16(experienceGained);
+        }
+
+        public static void EndStreak()
+        {
+            correctStreak = 0;
+        }
+
+        public static void AddTurn(int ammountToAdd)
+        {
+            turn += ammountToAdd;
+        }
+
+        public static string PowerUpChoice (string input)
+        {
+            if (input == "1")
+            {
+                AddSkips(1, 100);
+                itsPowerUpTime = false;
+                reply = $"Skips: {skips}";
+            }
+            else if (input == "2")
+            {
+                AddToHealth(4, 100);
+                itsPowerUpTime = false;
+                reply = "Increased health by 4";
+            }
+            else if (input == "3")
+            {
+                if (! hasDivineShield)
+                {
+                    ActivateDivineShield(100);
+                    itsPowerUpTime = false;
+                    reply = "Divine Shield Activated";
+                }
+                else
+                {
+                    reply = "Divine Shield is already active";
+                }
+            }
+            else if (input == "4" && experience >= 200)
+            {
+                AddToMaxHealth(25, 200);
+                itsPowerUpTime = false;
+                reply = $"Max Health is now {maxHealth}";
+            }
+            else if (input == "5" && experience >= 300)
+            {
+                AddSkips(5, 300);
+                itsPowerUpTime = false;
+                reply = $"Skips: {skips}";
+            }
+            else if (input == "6" && experience >= 500)
+            {
+                AddToHealth(50, 500);
+                itsPowerUpTime = false;
+                reply = $"Health: {health} Armour: {armour}";
+            }
+            else if (input == "7")
+            {
+                reply = "";
+            }
+            else if (input == "4" && experience < 200)
+            {
+                reply = "You do not have enough experience.";
+            }
+            else if (input == "5" && experience < 300)
+            {
+                reply = "You do not have enough experience.";
+            }
+            else if (input == "6" && experience < 500)
+            {
+                reply = "You do not have enough experience.";
+            }
+            else if (input != "1" && input != "2" && input != "3" && input != "4" && input != "5" && input != "6" && input != "7")
+            {
+                reply = "Please enter a valid choice.";
+            }
+            return reply;
+        }
+
+        public static void SubtractHealthLost(double difference, int armour)
+        {
+            lostArmour = 0;
+            lostHealth = Convert.ToInt64(difference / 5);
+            while (lostHealth > maxHealth)
+            {
+                if (difference >= 1500)
+                {
+                    break;
+                }
+                lostHealth = Math.Round(lostHealth / 5);
+            }
+
+            if (lostHealth > maxHealth)
+            {
+                lostHealth = maxHealth;
+            }
+
+            if (armour == 0)
+            {
+                health -= Convert.ToInt16(Math.Round(lostHealth));
+            }
+            else if (armour > 0)
+            {
+                if (lostHealth < 5)
+                {
+                    lostHealth = Math.Round(lostHealth / 2);
+                    lostArmour = 1;
+                }
+                else
+                {
+                    if (lostHealth > (armour * 5))
+                    {
+                        lostHealth -= (armour * 5);
+                        lostArmour = armour;
+                    }
+                    else if (lostHealth <= (armour * 5))
+                    {
+                        lostHealth = Math.Round(lostHealth / 5) * 5;
+                        lostArmour = Convert.ToInt16(lostHealth) / 5;
+                        lostHealth = 0;
+                    }
+                }
+                health -= Convert.ToInt16(lostHealth);
+                Player.armour -= lostArmour;
+            }
+        }
+
+        public static string UseDivineShield()
+        {
+            string reply;
+            hasDivineShield = false;
+            reply = $"Oh, your answer was {difference} off. But you had Divine Shield so you lost no health and no points.";
+            ++correctStreak;
+            return reply;
+        }
+
+        public static void CalculateDifference(int answer, string input)
+        {
+            difference = Math.Abs(Convert.ToInt64(input) - answer);
+        }
+
+        public static void SubtractPointsLost(int points)
+        {
+            lostPoints = Convert.ToInt64(Math.Round((points * 0.25f) - turnsCorrect));
+        }
+
+        public static void AddToTurnsCorrect(int ammountToAdd)
+        {
+            turnsCorrect += ammountToAdd;
+        }
+
+        public static void IncreaseDifficulty()
+        {
+
+        }
+
+        public static string PowerUps()
+        {
+            string powerUps;
+            if (experience >= 100 && turn % 10 == 0)
+            {
+                itsPowerUpTime = true;
+                powerUps = String.Join(Environment.NewLine,
+                    $"Experience: {experience}",
+                    "",
+                    "Choose:",
+                    "(1) +1 Skip (skips the question and counts as a correct answer. To use: type \"skip\"). Cost: 100",
+                    "(2) +4 Health. Cost: 100",
+                    "(3) Divine Shield (allows you to get a question wrong with no negative effects. Does not stack). Cost 100",
+                    "(4) +25 Max Health. Cost: 200",
+                    "(5) +5 Skips. Cost: 300",
+                    "(6) +50 Health. Cost: 500",
+                    "(7) Skip this upgrade.",
+                    "");
+                return powerUps;
+            }
+            else
+            {
+                itsPowerUpTime = false;
+                return null;
+            }
+            
+        }
+
+        public static string Congrats(double experienceGain, double pointGain)
+        {
+            Random numberGenerator = new Random();
+            string reply;
+            int responsindex = numberGenerator.Next(1, 4);
+            switch (responsindex)
+            {
+                case 1:
+                    {
+                        if (points == 1f)
+                        {
+                            reply = String.Join(Environment.NewLine, $@"Congrats, your answer was correct. Plus {pointGain} point and you gain 1 health.",
+                            $"You gain {experienceGain} experience.");
+                        }
+                        else
+                        {
+                            reply = String.Join(Environment.NewLine, $@"Congrats, your answer was correct. Plus {pointGain} points and you gain 1 health.",
+                            $"You gain {experienceGain} experience.");
+                        }
+                        return reply;
+                    }
+                case 2:
+                    {
+                        if (points == 1f)
+                        {
+                            reply = String.Join(Environment.NewLine, $@"Correct! Plus 1 Point and 1 health.",
+                            $"You gain {experienceGain} experience.");
+                        }
+                        else
+                        {
+                            reply = String.Join(Environment.NewLine, $@"Correct! Plus {pointGain} Points and 1 health.",
+                            $"You gain {experienceGain} experience.");
+                            Console.WriteLine();
+                        }
+                        return reply;
+                    }
+                case 3:
+                    {
+                        if (points == 1f)
+                        {
+                            reply = String.Join(Environment.NewLine, $"Spot on! Plus 1 Point and 1 health.",
+                            $"You gain {experienceGain} experience.");
+                        }
+                        else
+                        {
+                            reply = String.Join(Environment.NewLine, $@"Spot on! Plus {pointGain} Points and 1 health.",
+                            $"You gain {experienceGain} experience.");
+                        }
+                        return reply;
+                    }
+                default:
+                    {
+                        throw new Exception("Unexspected Case");
+                    }
+            }
+        }
+
+        public static string Failed()
+        {
+            Random numberGenerator = new Random();
+            string reply;
+            int responseIndex2 = numberGenerator.Next(1, 4);
+            switch (responseIndex2)
+            {
+                case 1:
+                    {
+                        if (lostPoints == 1)
+                        {
+                            reply = $"Nope! You were {difference} off. Minus 1 point! Minus {lostHealth} health and {lostArmour} armour!";
+                        }
+                        else
+                        {
+                            reply = $"Nope! You were {difference} off. Minus {lostPoints} points! Minus {lostHealth} health and {lostArmour} armour!";
+                        }
+                        return reply;
+                    }
+                case 2:
+                    {
+                        if (lostPoints == 1)
+                        {
+                            reply = $"Wrong! You were {difference} off. Minus 1 point, and you lost {lostHealth} health and {lostArmour} armour!";
+                        }
+                        else
+                        {
+                            reply = $"Wrong! You were {difference} off. {lostPoints} points, and you lost {lostHealth} health and {lostArmour} armour";
+                        }
+                        return reply;
+                    }
+                case 3:
+                    {
+                        if (lostPoints == 1)
+                        {
+                            reply = $"You were {difference} off. You lose 1 point, {lostHealth} health, and {lostArmour} armour :(";
+                        }
+                        else
+                        {
+                            reply = $"You were {difference} off. You lose {lostPoints} points, {lostHealth} health, and {lostArmour} armour :(";
+                        }
+                        return reply;
+                    }
+
+                default:
+                    {
+                        throw new Exception("Unexpected Case");
+                    }
+            }
+        }
+    }
+
+    class Program : GameBackEnd
+    {
+        public static void Main()
+        {
+            Player player = new Player(100, 0);
+            do
+            {
+                AddTurn(1);
+                Console.WriteLine(UserStats());
+                Console.WriteLine();
+
+                Console.WriteLine(GenerateMultiplicationProblem(1, 11, 1, 100));
+                Console.WriteLine(answer);
+                Console.WriteLine();
+
+                input = Console.ReadLine();
+                if (input == Convert.ToString(answer))
+                {
+                    AddToTurnsCorrect(1);
+                    AddPointsGained(answer, turnsCorrect);
+                    AddExperienceGained(answer, pointsGained);
+                    AddToHealth(1, 0);
+                    Console.WriteLine();
+                    Console.WriteLine(Congrats(experienceGained,pointsGained));
+                    Console.WriteLine();
+                    PowerUps();
+                    if (itsPowerUpTime)
+                    {
+                        do
+                        {
+                            Console.WriteLine(PowerUps());
+                            string powerUpChoice = Console.ReadLine();
+                            Console.WriteLine();
+                            Console.WriteLine(PowerUpChoice(powerUpChoice));
+                            Console.WriteLine();
+                            PowerUpChoice(powerUpChoice);
+                        }
+                        while (itsPowerUpTime);
+                    }
+                }
+                else if (input != Convert.ToString(answer))
+                {
+                    if (!hasDivineShield)
+                    {
+                        EndStreak();
+                        CalculateDifference(answer, input);
+                        SubtractHealthLost(difference, armour);
+                        SubtractPointsLost(points);
+                        Console.WriteLine(Failed());
+                        Console.WriteLine();
+                    }
+                    else if (hasDivineShield)
+                    {
+                        UseDivineShield();
+                        Console.WriteLine();
+                        Console.WriteLine(UseDivineShield());
+                        Console.WriteLine();
+                    }
+                }
+            }
+            while (health > 0);
+        }
+    }
+}
