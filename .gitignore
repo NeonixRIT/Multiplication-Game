@@ -21,3 +21,4 @@ bin/Debug/netcoreapp3.1/Multiplication-Game.exe
 bin/Debug/netcoreapp3.1/Multiplication-Game.runtimeconfig.dev.json
 bin/Debug/netcoreapp3.1/Multiplication-Game.runtimeconfig.json
 obj/Debug/netcoreapp3.1/Multiplication-Game.csproj.CoreCompileInputs.cache
+*.v2

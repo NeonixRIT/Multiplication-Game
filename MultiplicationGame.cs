@@ -457,7 +457,7 @@ namespace MultiplicationGame
             }
         }
 
-        //Randomly choses response for when the player gets the question wrong
+        //Randomly chooses response for when the player gets the question wrong
         public string Failed(double difference, double lostPoints, double lostHealth, int lostArmour)
         {
             Random numberGenerator = new Random();
