@@ -9,3 +9,15 @@ obj/Debug/netcoreapp3.1/Multiplication-Game.assets.cache
 obj/Debug/netcoreapp3.1/Multiplication-Game.AssemblyInfo.cs
 obj/Debug/netcoreapp3.1/.NETCoreApp,Version=v3.1.AssemblyAttributes.cs
 obj/Debug/netcoreapp3.1/Multiplication-Game.AssemblyInfoInputs.cache
+obj/Debug/netcoreapp3.1/Multiplication-Game.exe
+obj/Debug/netcoreapp3.1/Multiplication-Game.genruntimeconfig.cache
+obj/Debug/netcoreapp3.1/Multiplication-Game.dll
+obj/Debug/netcoreapp3.1/Multiplication-Game.csproj.FileListAbsolute.txt
+*.pdb
+bin/Debug/netcoreapp3.1/Multiplication-Game.deps.json
+.vs/Multiplication-Game/v16/.suo
+bin/Debug/netcoreapp3.1/Multiplication-Game.dll
+bin/Debug/netcoreapp3.1/Multiplication-Game.exe
+bin/Debug/netcoreapp3.1/Multiplication-Game.runtimeconfig.dev.json
+bin/Debug/netcoreapp3.1/Multiplication-Game.runtimeconfig.json
+obj/Debug/netcoreapp3.1/Multiplication-Game.csproj.CoreCompileInputs.cache
