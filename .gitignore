@@ -1,0 +1,11 @@
+
+obj/project.nuget.cache
+obj/project.assets.json
+obj/Multiplication-Game.csproj.nuget.g.targets
+obj/Multiplication-Game.csproj.nuget.g.props
+obj/Multiplication-Game.csproj.nuget.dgspec.json
+obj/Debug/netcoreapp3.1/Multiplication-Game.csprojAssemblyReference.cache
+obj/Debug/netcoreapp3.1/Multiplication-Game.assets.cache
+obj/Debug/netcoreapp3.1/Multiplication-Game.AssemblyInfo.cs
+obj/Debug/netcoreapp3.1/.NETCoreApp,Version=v3.1.AssemblyAttributes.cs
+obj/Debug/netcoreapp3.1/Multiplication-Game.AssemblyInfoInputs.cache
